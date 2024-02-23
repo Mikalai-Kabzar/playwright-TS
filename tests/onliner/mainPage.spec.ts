@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test';
-import { MainPage } from '../../page objects/mainPage.page';
-import { SearchPage } from '../../page objects/searchPage.page';
-import { LoginPage } from '../../page objects/loginPage.page';
+import { MainPage } from '../../page objects/main.page';
+import { SearchPage } from '../../page objects/search.page';
+import { LoginPage } from '../../page objects/login.page';
 
 let mainPage: MainPage;
 
-test.beforeEach(async ({ page }) => {
+test.beforeEach('Navigation to the main page of the Onliner.by', async ({ page }) => {
   mainPage = new MainPage(page);
   await mainPage.goto();
 });
@@ -82,7 +82,7 @@ test('login window could be opened @main', async ({page}) => {
   await mainPage.authBarButton.click();
   let loginPage = new LoginPage(page);
   
-  expect(loginPage.authFormTitle).toHaveText('Вход')
+  await expect(loginPage.authFormTitle).toHaveText('Вход')
 });
 
 test('login window VK could be opened @main', async ({page}) => {
@@ -110,4 +110,46 @@ test('login window Google could be opened @main', async ({page}) => {
   expect(pageVkLogin.url()).toBe('https://gc.onliner.by/views/social-auth.html?socialType=google')
   await pageVkLogin.waitForURL('https://accounts.google.com/v3/signin/identifier**');
   expect(pageVkLogin.url()).toContain('https://accounts.google.com/v3/signin/identifier')
+});
+
+test('currencies could be opened by the top link @main', async ({page}) => {
+  await mainPage.currenciesButtons.nth(0).click();
+  await page.waitForURL('https://kurs.onliner.by/');
+  expect(page.url()).toBe('https://kurs.onliner.by/')
+});
+
+test('currencies could be opened by the bottom link @main', async ({page}) => {
+  await mainPage.currenciesButtons.nth(1).click();
+  await page.waitForURL('https://kurs.onliner.by/');
+  expect(page.url()).toBe('https://kurs.onliner.by/')
+});
+
+test('weather could be opened by the link @main', async ({page}) => {
+  await mainPage.weatherButton.click();
+  await page.waitForURL('https://pogoda.onliner.by/');
+  expect(page.url()).toBe('https://pogoda.onliner.by/');
+});
+
+test('clover could be opened by the link @main', async ({page, context}) => {
+  const [newTab] = await Promise.all([
+    context.waitForEvent('page'),
+    mainPage.cloverButton.click()
+  ]);
+  await newTab.waitForURL('https://clever.onliner.by/*');
+  expect(newTab.url()).toContain('https://clever.onliner.by/');
+});
+
+test('realt could be opened by the link @main', async ({page}) => {
+  await mainPage.realtButton.click();
+  await page.waitForURL('https://r.onliner.by/pk/');
+  expect(page.url()).toBe('https://r.onliner.by/pk/');
+});
+
+test('realt could be opened by the link of any buttons @main', async ({page}) => {
+  await mainPage.realtButton.hover();
+
+  await mainPage.realtSellGomelButton.click();
+
+  await page.waitForURL('https://r.onliner.by/pk/*');
+  expect(page.url()).toContain('https://r.onliner.by/pk/');
 });
