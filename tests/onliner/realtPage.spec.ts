@@ -97,11 +97,11 @@ test.describe.parallel('city navigation with data provider @debugCI', () => {
       await page.waitForLoadState();
       let realtPage = new RealtPage(page);
 
-      // await expect.poll(async () => {
-      //     const contents = await realtPage.addressLabels.allTextContents();
-      //     return contents.length > 0;
-      //   }, { timeout: 5000 }).toBe(true);
-        expect((await realtPage.addressLabels.allTextContents()).length).toBeGreaterThan(0);
+      await expect.poll(async () => {
+          const contents = await realtPage.addressLabels.allTextContents();
+          return contents.length > 0;
+        }, { timeout: 5000 }).toBe(true);
+      //await expect((await realtPage.addressLabels.allTextContents()).length).toBeGreaterThan(0);
       const listOfAddress = await realtPage.addressLabels.allTextContents();
 
       const listOfCorrectCityAddress = listOfAddress.filter((item)=> 
