@@ -32,10 +32,6 @@ export class MainPage {
   readonly realtRentGomelButton: Locator;
   readonly realtRentGrodnoButton: Locator;
   
-  static readonly expandedSearchModalClass = 'modal modal_open';
-  static readonly collapsedSearchModalClass = 'modal';
-
-
   constructor(page: Page) {
     this.page = page;
     this.searchInput = this.page.locator('.fast-search__input');

@@ -10,29 +10,21 @@ test.beforeEach('Navigation to the main page of the Onliner.by', async ({ page }
   await mainPage.goto();
 });
 
-test('search modal is opened @main', async () => {
-  await expect(mainPage.searchModal).toHaveClass(MainPage.collapsedSearchModalClass);
-  await expect(mainPage.searchModal).not.toHaveClass(MainPage.expandedSearchModalClass);
-
-  await mainPage.searchInput.fill('sony');
-
-  await expect(mainPage.searchModal).not.toHaveClass(MainPage.collapsedSearchModalClass);
-  await expect(mainPage.searchModal).toHaveClass(MainPage.expandedSearchModalClass);
-});
-
 test('search modal is collapsed by cross click @main @frame', async ({ page }) => {
   const searchPage = page.frameLocator('.modal-iframe');
-  
+  const crossButton = searchPage.locator(SearchPage.crossButton);
+  const calcY = async () => (await searchPage.locator('html').boundingBox())?.y;
+
+  expect(await calcY()).toBe(0); 
+  await expect(crossButton).toBeHidden();
+
   await mainPage.searchInput.fill('apple');
 
-  await expect(mainPage.searchModal).not.toHaveClass(MainPage.collapsedSearchModalClass);
-  await expect(mainPage.searchModal).toHaveClass(MainPage.expandedSearchModalClass);
-  await searchPage.locator(SearchPage.crossButton).isVisible({timeout:10000});
+  expect(await calcY()).not.toBe(0);
+  await expect(crossButton).toBeVisible();
+
   await searchPage.locator(SearchPage.crossButton).click();
-  await searchPage.locator(SearchPage.crossButton).isHidden({timeout:10000});
-  
-  await expect(mainPage.searchModal).toHaveClass(MainPage.collapsedSearchModalClass);
-  await expect(mainPage.searchModal).not.toHaveClass(MainPage.expandedSearchModalClass);
+  expect(await calcY()).toBe(0);
 });
 
 test('products buttons are presented @main', async () => {
