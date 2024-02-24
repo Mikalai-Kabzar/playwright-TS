@@ -4,6 +4,13 @@ import { RealtPage } from '../../page objects/realt.page';
 
 let mainPage: MainPage;
 
+async function waitForOneItem(locator: Locator){
+  await expect.poll(async () => {
+    const contents = await locator.allTextContents();
+    return contents.length > 0;
+  }, { timeout: 5000 }).toBe(true);
+}
+
 test.beforeEach('Navigation to the main page of the Onliner.by', async ({ page }) => {
   mainPage = new MainPage(page);
   await mainPage.goto();
@@ -97,11 +104,8 @@ test.describe.parallel('city navigation with data provider', () => {
       await page.waitForLoadState();
       let realtPage = new RealtPage(page);
 
-      await expect.poll(async () => {
-          const contents = await realtPage.addressLabels.allTextContents();
-          return contents.length > 0;
-        }, { timeout: 5000 }).toBe(true);
-      //await expect((await realtPage.addressLabels.allTextContents()).length).toBeGreaterThan(0);
+      await waitForOneItem(realtPage.addressLabels);
+
       const listOfAddress = await realtPage.addressLabels.allTextContents();
 
       const listOfCorrectCityAddress = listOfAddress.filter((item)=> 
@@ -143,6 +147,7 @@ dataProvider.forEach((data) => {
       await button.click();
       await page.waitForLoadState();
       let realtPage = new RealtPage(page);
+      await waitForOneItem(realtPage.addressLabels);
       const listOfAddress = (await realtPage.addressLabels.allTextContents()).map((item)=>item.toLocaleLowerCase().replace(/ё/g, 'е'));   
       const listOfCorrectCityAddress = listOfAddress.filter((item)=> 
       (!item.includes('минск') && !item.includes('гомель') && !item.includes('могилев') && !item.includes('гродно') && !item.includes('брест') && !item.includes('витебск')))
