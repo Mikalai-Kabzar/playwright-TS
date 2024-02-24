@@ -97,16 +97,12 @@ test.describe.parallel('city navigation with data provider @debugCI', () => {
       await page.waitForLoadState();
       let realtPage = new RealtPage(page);
 
-      await page.waitForTimeout(3000);
+      expect(await realtPage.addressLabels.allTextContents()).toBeGreaterThan(0);
 
       const listOfAddress = await realtPage.addressLabels.allTextContents();
-      
-      console.log(listOfAddress);
 
       const listOfCorrectCityAddress = listOfAddress.filter((item)=> 
       item.toLocaleLowerCase().replace(/ё/g, 'е').includes(data.city.toLocaleLowerCase().replace(/ё/g, 'е')));
-
-      console.log(listOfCorrectCityAddress);
 
       expect(listOfCorrectCityAddress.length/listOfAddress.length).toBeGreaterThanOrEqual(minimumRate);
     });
