@@ -27,9 +27,9 @@ test('search modal is collapsed by cross click @main @frame', async ({ page }) =
 
   await expect(mainPage.searchModal).not.toHaveClass(MainPage.collapsedSearchModalClass);
   await expect(mainPage.searchModal).toHaveClass(MainPage.expandedSearchModalClass);
-  expect.poll(async ()=> await searchPage.locator(SearchPage.crossButton).isVisible());
+  expect.poll(async ()=> await searchPage.locator(SearchPage.crossButton).isVisible()).toBeTruthy();
   await searchPage.locator(SearchPage.crossButton).click();
-  expect.poll(async ()=> !await searchPage.locator(SearchPage.crossButton).isVisible());
+  expect.poll(async ()=> !await searchPage.locator(SearchPage.crossButton).isVisible()).toBeTruthy();
 
   await expect(mainPage.searchModal).toHaveClass(MainPage.collapsedSearchModalClass);
   await expect(mainPage.searchModal).not.toHaveClass(MainPage.expandedSearchModalClass);

@@ -97,7 +97,7 @@ test.describe.parallel('city navigation with data provider', () => {
       await page.waitForLoadState();
       let realtPage = new RealtPage(page);
 
-      await expect.poll(async () => realtPage.addressLabels.count()).toBeGreaterThan(0);
+      expect.poll(async () => await realtPage.addressLabels.count()).toBeGreaterThan(0);
       const listOfAddress = await realtPage.addressLabels.allTextContents();
 
       const listOfCorrectCityAddress = listOfAddress.filter((item)=> 
@@ -139,7 +139,7 @@ dataProvider.forEach((data) => {
       await button.click();
       await page.waitForLoadState();
       let realtPage = new RealtPage(page);
-      expect.poll(async () => (await realtPage.addressLabels.count())>0);
+      expect.poll(async () => await realtPage.addressLabels.count()).toBeGreaterThan(0);
       const listOfAddress = (await realtPage.addressLabels.allTextContents()).map((item)=>item.toLocaleLowerCase().replace(/ё/g, 'е'));   
       const listOfCorrectCityAddress = listOfAddress.filter((item)=> 
       (!item.includes('минск') && !item.includes('гомель') && !item.includes('могилев') && !item.includes('гродно') && !item.includes('брест') && !item.includes('витебск')))
