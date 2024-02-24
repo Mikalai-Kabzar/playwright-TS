@@ -28,7 +28,7 @@ test('Realt bar content under the hover', async ({ page }) => {
 
 });
 
-test.describe.parallel('city navigation with data provider', () => {
+test.describe.parallel('city navigation with data provider @debugCI', () => {
   const dataProvider = [
     { city: 'Гродно', operation: 'buy'},
     { city: 'Могилёв', operation: 'buy'},
@@ -96,10 +96,18 @@ test.describe.parallel('city navigation with data provider', () => {
       await button.click();
       await page.waitForLoadState();
       let realtPage = new RealtPage(page);
+
+      await page.waitForTimeout(3000);
+
       const listOfAddress = await realtPage.addressLabels.allTextContents();
       
+      console.log(listOfAddress);
+
       const listOfCorrectCityAddress = listOfAddress.filter((item)=> 
-      item.toLocaleLowerCase().replace(/ё/g, 'е').includes(data.city.toLocaleLowerCase().replace(/ё/g, 'е')))
+      item.toLocaleLowerCase().replace(/ё/g, 'е').includes(data.city.toLocaleLowerCase().replace(/ё/g, 'е')));
+
+      console.log(listOfCorrectCityAddress);
+
       expect(listOfCorrectCityAddress.length/listOfAddress.length).toBeGreaterThanOrEqual(minimumRate);
     });
   });
