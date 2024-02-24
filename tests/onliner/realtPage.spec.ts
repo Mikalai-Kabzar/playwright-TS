@@ -4,19 +4,12 @@ import { RealtPage } from '../../page objects/realt.page';
 
 let mainPage: MainPage;
 
-async function waitForOneItem(locator: Locator){
-  await expect.poll(async () => {
-    const contents = await locator.allTextContents();
-    return contents.length > 0;
-  }, { timeout: 5000 }).toBe(true);
-}
-
 test.beforeEach('Navigation to the main page of the Onliner.by', async ({ page }) => {
   mainPage = new MainPage(page);
   await mainPage.goto();
 });
 
-test('Realt bar content under the hover', async ({ page }) => {
+test('Realt bar content under the hover', async ({}) => {
   await expect(mainPage.realtSellGomelButton).toBeHidden();
   await expect(mainPage.realtSellMinskButton).not.toBeVisible();
   await expect(mainPage.realtSellGrodnoButton).toBeHidden();
@@ -104,7 +97,7 @@ test.describe.parallel('city navigation with data provider', () => {
       await page.waitForLoadState();
       let realtPage = new RealtPage(page);
 
-      await waitForOneItem(realtPage.addressLabels);
+      await expect.poll(async () => realtPage.addressLabels.count()).toBeGreaterThan(0);
 
       const listOfAddress = await realtPage.addressLabels.allTextContents();
 
@@ -147,7 +140,7 @@ dataProvider.forEach((data) => {
       await button.click();
       await page.waitForLoadState();
       let realtPage = new RealtPage(page);
-      await waitForOneItem(realtPage.addressLabels);
+      await expect.poll(async () => realtPage.addressLabels.count()).toBeGreaterThan(0);
       const listOfAddress = (await realtPage.addressLabels.allTextContents()).map((item)=>item.toLocaleLowerCase().replace(/ё/g, 'е'));   
       const listOfCorrectCityAddress = listOfAddress.filter((item)=> 
       (!item.includes('минск') && !item.includes('гомель') && !item.includes('могилев') && !item.includes('гродно') && !item.includes('брест') && !item.includes('витебск')))
