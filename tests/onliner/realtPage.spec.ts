@@ -28,7 +28,7 @@ test('Realt bar content under the hover', async ({ page }) => {
 
 });
 
-test.describe.parallel('city navigation with data provider @debugCI', () => {
+test.describe.parallel('city navigation with data provider', () => {
   const dataProvider = [
     { city: 'Гродно', operation: 'buy'},
     { city: 'Могилёв', operation: 'buy'},
