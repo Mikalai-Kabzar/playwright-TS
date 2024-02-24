@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Locator } from '@playwright/test';
 import { MainPage } from '../../page objects/main.page';
 import { SearchPage } from '../../page objects/search.page';
 import { LoginPage } from '../../page objects/login.page';
@@ -27,8 +27,9 @@ test('search modal is collapsed by cross click @main @frame', async ({ page }) =
 
   await expect(mainPage.searchModal).not.toHaveClass(MainPage.collapsedSearchModalClass);
   await expect(mainPage.searchModal).toHaveClass(MainPage.expandedSearchModalClass);
-
+  expect.poll(async ()=> await searchPage.locator(SearchPage.crossButton).isVisible());
   await searchPage.locator(SearchPage.crossButton).click();
+  expect.poll(async ()=> !await searchPage.locator(SearchPage.crossButton).isVisible());
 
   await expect(mainPage.searchModal).toHaveClass(MainPage.collapsedSearchModalClass);
   await expect(mainPage.searchModal).not.toHaveClass(MainPage.expandedSearchModalClass);
