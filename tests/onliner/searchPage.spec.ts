@@ -5,7 +5,6 @@ import { SearchPage } from '../../page objects/search.page';
 let mainPage: MainPage;
 let searchPage: SearchPage;
 const minimumRate = 0.7;
-const pageLoadTImeout = 5000;
 
 test.beforeEach('Search page mechanism', async ({ page }) => {
   mainPage = new MainPage(page);
@@ -24,12 +23,16 @@ test('Look up navigation buttons in the search page', async ({page}) => {
 });
 
 test('Catalog page contains proper number of expected output results on the Catalogue page', async ({page}) => {
+  const timeoutTime = 15000;
   const searchPage = new SearchPage(page);
   await mainPage.searchInput.fill('apple');
-  
+
+  expect.poll(async () => (searchPage.inCatalogueButton.locator(SearchPage.activeButtonStatusLocatorPart)).isVisible(), {timeout: timeoutTime});
+
   await expect(searchPage.inCatalogueButton.locator(SearchPage.activeButtonStatusLocatorPart)).toBeVisible();
 
   await searchPage.inTheNewsButton.click();
+  
   await expect(searchPage.inCatalogueButton.locator(SearchPage.inactiveButtonStatusLocatorPart)).toBeVisible();
   await expect(searchPage.inCatalogueButton.locator(SearchPage.activeButtonStatusLocatorPart)).not.toBeVisible();
   await expect(searchPage.inTheNewsButton.locator(SearchPage.activeButtonStatusLocatorPart)).toBeVisible();
@@ -71,7 +74,7 @@ test(`test on the 'на форуме' tab using 'acer' query`, async () => {
 async function testSearchMethod(searchPage:SearchPage, menuButtonlocator: Locator, labelLocator: Locator, query: string) {
   await mainPage.searchInput.fill(query);
   await menuButtonlocator.click();
-  await expect.poll(async () => await labelLocator.count(),{timeout:pageLoadTImeout}).toBeGreaterThan(0);
+  await expect.poll(async () => await labelLocator.count()).toBeGreaterThan(0);
   const actuaItemTitles = await labelLocator.allTextContents();
   const fitItemTitles = actuaItemTitles.map((item)=>item.toLocaleLowerCase().includes(query));   
   expect(fitItemTitles.length/actuaItemTitles.length).toBeGreaterThanOrEqual(minimumRate);

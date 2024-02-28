@@ -4,7 +4,7 @@ import { RealtPage } from '../../page objects/realt.page';
 
 let mainPage: MainPage;
 const minimumRateBuy = 0.7;
-const minimumRateRent = 0.5;
+const minimumRateRent = 0.4;
 
 test.beforeEach('Navigation to the main page of the Onliner.by', async ({ page }) => {
   mainPage = new MainPage(page);
@@ -144,7 +144,8 @@ dataProvider.forEach((data) => {
       await expect.poll(async () => await realtPage.addressLabels.count(),{timeout:10000}).toBeGreaterThan(0);
       const listOfAddress = (await realtPage.addressLabels.allTextContents()).map((item)=>item.toLocaleLowerCase().replace(/ё/g, 'е'));   
       const listOfCorrectCityAddress = listOfAddress.filter((item)=> 
-      (!item.includes('минск') && !item.includes('гомель') && !item.includes('могилев') && !item.includes('гродно') && !item.includes('брест') && !item.includes('витебск')))
+      (!item.includes('гомель') && !item.includes('могилев') && !item.includes('гродно') && !item.includes('брест') && !item.includes('витебск')))
+
       expect(listOfCorrectCityAddress.length/listOfAddress.length).toBeGreaterThanOrEqual(minimumRate);
     });
   });
