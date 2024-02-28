@@ -31,7 +31,8 @@ export class MainPage {
   readonly realtRentVitebskButton: Locator;
   readonly realtRentGomelButton: Locator;
   readonly realtRentGrodnoButton: Locator;
-  
+  readonly cartButton: Locator;
+
   constructor(page: Page) {
     this.page = page;
     this.searchInput = this.page.locator('.fast-search__input');
@@ -49,6 +50,8 @@ export class MainPage {
     this.realtButton = this.page.locator(".b-main-navigation__link").nth(3);
     this.realtSellButton = this.page.locator("//a[text()='Продажа']");
     this.realtRentButton = this.page.locator("//a[text()='Аренда']");
+    
+    this.cartButton = this.page.locator(".auth-bar__item--cart");
 
     this.realtSellMinskButton = this.buildCityLocator(MainPage.sellWord,'Минск');
     this.realtSellMogilevButton = this.buildCityLocator(MainPage.sellWord,'Могилев');

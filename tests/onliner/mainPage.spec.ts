@@ -2,6 +2,7 @@ import { test, expect, Locator } from '@playwright/test';
 import { MainPage } from '../../page objects/main.page';
 import { SearchPage } from '../../page objects/search.page';
 import { LoginPage } from '../../page objects/login.page';
+import { CartPage } from '../../page objects/cart.page';
 
 let mainPage: MainPage;
 
@@ -145,4 +146,15 @@ test('realt could be opened by the link of any buttons @main', async ({page}) =>
 
   await page.waitForURL('https://r.onliner.by/pk/*');
   expect(page.url()).toContain('https://r.onliner.by/pk/');
+});
+
+test('Cart page navigation from the main page', async ({page}) => {
+  await mainPage.cartButton.click();
+  const cartPage = new CartPage(page);
+  await page.waitForLoadState();
+ //bug
+  await page.reload();
+
+  await expect(cartPage.promoInput).toBeVisible();
+  await expect(page).toHaveURL(CartPage.url);
 });
