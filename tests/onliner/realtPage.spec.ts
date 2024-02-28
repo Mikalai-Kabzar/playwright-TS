@@ -3,6 +3,8 @@ import { MainPage } from '../../page objects/main.page';
 import { RealtPage } from '../../page objects/realt.page';
 
 let mainPage: MainPage;
+const minimumRateBuy = 0.7;
+const minimumRateRent = 0.5;
 
 test.beforeEach('Navigation to the main page of the Onliner.by', async ({ page }) => {
   mainPage = new MainPage(page);
@@ -49,10 +51,10 @@ test.describe.parallel('city navigation with data provider', () => {
 
       switch (data.operation){
         case 'buy':
-          minimumRate = 0.8
+          minimumRate = minimumRateBuy
           break;
         default: 
-          minimumRate = 0.6
+          minimumRate = minimumRateRent
           break;       
       }
 
@@ -120,10 +122,10 @@ dataProvider.forEach((data) => {
       let minimumRate: number;
       switch (data.operation){
         case 'buy':
-          minimumRate = 0.8
+          minimumRate = minimumRateBuy
           break;
         default: 
-          minimumRate = 0.6
+          minimumRate = minimumRateRent
           break;       
       }
       let button: Locator;

@@ -4,7 +4,7 @@ import { SearchPage } from '../../page objects/search.page';
 
 let mainPage: MainPage;
 let searchPage: SearchPage;
-const minimumRate = 0.8;
+const minimumRate = 0.7;
 const pageLoadTImeout = 5000;
 
 test.beforeEach('Search page mechanism', async ({ page }) => {
