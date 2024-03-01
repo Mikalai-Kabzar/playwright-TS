@@ -19,7 +19,9 @@ export class CartPage {
   readonly changeCityInput: Locator;
   readonly changeCityCloseButton: Locator;
   readonly citiesDropdownItems: Locator;
-
+  readonly cityNotFoundLabel: Locator;
+  readonly noteYourCityLabel: Locator;
+  
   // readonly onTheForumButton: Locator;
   // readonly titleCatalogLabel: Locator;
   // readonly titleNewsLabel: Locator;
@@ -36,8 +38,8 @@ export class CartPage {
     this.changeCityButton = this.page.locator(".auth-button");
     this.changeCityInput = this.page.locator(".auth-input");
     this.changeCityCloseButton = this.page.locator(".auth-popup__close");
-    //this.citiesDropdown = this.page.locator(".auth-dropdown");
-
+    this.cityNotFoundLabel = this.page.locator(".auth-dropdown__content");
+    this.noteYourCityLabel = this.page.locator(".auth-form__description_error");
     this.citiesDropdownItems = this.page.locator(".auth-dropdown__item");
 
 

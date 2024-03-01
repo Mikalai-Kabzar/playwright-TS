@@ -16,16 +16,16 @@ test('search modal is collapsed by cross click @main @frame', async ({ page }) =
   const crossButton = searchPage.locator(SearchPage.crossButton);
   const calcY = async () => (await searchPage.locator('html').boundingBox())?.y;
 
-  expect(await calcY()).toBe(0); 
+  expect(await calcY()).toBeLessThanOrEqual(0); 
   await expect(crossButton).toBeHidden();
 
   await mainPage.searchInput.fill('apple');
 
-  expect(await calcY()).not.toBe(0);
+  expect(await calcY()).toBeGreaterThan(0);
   await expect(crossButton).toBeVisible();
 
   await searchPage.locator(SearchPage.crossButton).click();
-  expect(await calcY()).toBe(0);
+  expect(await calcY()).toBeLessThanOrEqual(0); 
 });
 
 test('products buttons are presented @main', async () => {

@@ -8,9 +8,7 @@ test('Cart page navigation via direct url. Existing bug with invisible promo cod
 
   //bug
   await expect(cartPage.promoInput).not.toBeVisible();
-    
   await page.reload();
-
 
   await expect(cartPage.promoInput).toBeVisible();
   await expect(page).toHaveURL(CartPage.url);
@@ -40,7 +38,7 @@ test('New cart city selector form can be opened', async ({page}) => {
   await cartPage.yourCityButton.click();
   await cartPage.changeCityButton.isVisible();
 
-  expect(cartPage.changeCityInput).toBeVisible();
+  await expect(cartPage.changeCityInput).toBeVisible();
 });
 
 test('New cart city selector form can be closed', async ({page}) => {
@@ -50,10 +48,10 @@ test('New cart city selector form can be closed', async ({page}) => {
   await cartPage.changeCityButton.isVisible();
   await cartPage.changeCityCloseButton.click();
 
-  expect(cartPage.changeCityInput).not.toBeVisible();
+  await expect(cartPage.changeCityInput).not.toBeVisible();
 });
 
-test('New cart city can be changed @debug', async ({page}) => {
+test('New cart city can be changed', async ({page}) => {
   const city = 'Гомель';
   const cartPage = new CartPage(page);
   await cartPage.goto();
@@ -64,7 +62,46 @@ test('New cart city can be changed @debug', async ({page}) => {
   await expect.poll(async ()=> await cartPage.citiesDropdownItems.count()).toBeGreaterThan(0);
   await cartPage.citiesDropdownItems.nth(0).click();
   await cartPage.changeCityButton.click();
-  await page.waitForSelector(cartPage.changeCityInput['_selector'], { state: 'hidden', timeout: 5000});
-  expect(cartPage.changeCityInput).not.toBeVisible();
+
+  await expect(cartPage.changeCityInput).not.toBeVisible();
   expect(await cartPage.yourCityButton.textContent()).toContain(city);
+});
+
+test('Сart city not found label was shown', async ({page}) => {
+  const notExistingCity = 'Гомель123';
+  const cartPage = new CartPage(page);
+  await cartPage.goto();
+  await cartPage.yourCityButton.click();
+  await cartPage.changeCityInput.fill(notExistingCity);
+
+  await expect(cartPage.cityNotFoundLabel.getByText('Результатов не найдено')).toBeVisible();
+});
+
+test('Сart city choose city label was shown', async ({page}) => {
+  const notExistingCity = 'Гомель';
+  const cartPage = new CartPage(page);
+  await cartPage.goto();
+  await cartPage.yourCityButton.click();
+
+  expect(cartPage.noteYourCityLabel).not.toBeVisible();
+
+  await cartPage.changeCityInput.fill(notExistingCity);
+
+  await cartPage.changeCityButton.click();
+
+  await expect(cartPage.noteYourCityLabel).toBeVisible();
+  expect((await cartPage.noteYourCityLabel.textContent())?.trim()).toBe('Укажите населенный пункт');
+});
+
+test('Сart city cross button remove choose city label @debug', async ({page}) => {
+  const notExistingCity = 'Гомель';
+  const cartPage = new CartPage(page);
+  await cartPage.goto();
+  await cartPage.yourCityButton.click();
+  await cartPage.changeCityInput.fill(notExistingCity);
+  await cartPage.changeCityButton.click();
+  await expect(cartPage.noteYourCityLabel).toBeVisible();
+  await cartPage.removeCityQueryButton.click();
+  await expect(cartPage.noteYourCityLabel).not.toBeVisible();
+  expect(cartPage.changeCityInput.textContent()).toBe('');
 });
