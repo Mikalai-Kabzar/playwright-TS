@@ -1,11 +1,7 @@
 import { test, expect, Locator, Page } from '@playwright/test';
-import { CartPage } from '../../page objects/cart.page';
-import { CatalogPage } from '../../page objects/catalog.page';
-import { LoginPage } from '../../page objects/login.page';
 import { MainPage } from '../../page objects/main.page';
 import { CleverPage } from '../../page objects/clever.page';
 import { ProfilePage } from '../../page objects/profile.page';
-import { Context } from 'vm';
 
 test('Clever page navigation via direct url', async ({page}) => {
   const cleverPage = new CleverPage(page);
@@ -89,6 +85,46 @@ test.describe.parallel('Main page could be opened by the link', () => {
     ]);
 
     expect(mainPageNewTab.url()).toBe(MainPage.url);
+    });
+  });
+});
+
+test.describe.parallel('issue card medium links navigation tests', () => {
+  const dataProvider = [
+    { linkNumber: 0},
+    { linkNumber: 1},
+    { linkNumber: 2},
+  ];
+
+  dataProvider.forEach((data) => {
+    test(`Main page could be opened via to ${data.linkNumber} link button`, async ({ page, context }) => {
+    const cleverPage = new CleverPage(page);
+    await cleverPage.goto();
+    await new CleverPage(page).issueCartMediumButtons.nth(data.linkNumber).click();
+
+    expect(page.url()).toContain(ProfilePage.url);
+    });
+  });
+});
+
+test.describe.parallel('Developer links navigation tests @debug', () => {
+  const dataProvider = [
+    { linkNumber: 0, url: 'https://69pixels.com'},//bug
+    { linkNumber: 1, url: 'https://take5dev.com'},
+  ];
+
+  dataProvider.forEach((data) => {
+    test(`Developer link ${data.url} could be opened via to ${data.linkNumber} link button`, async ({ page, context }) => {
+    const cleverPage = new CleverPage(page);
+    await cleverPage.goto();
+
+    const [newTab] = await Promise.all([
+      context.waitForEvent('page', {timeout:50000}),
+      cleverPage.developerLinks.nth(data.linkNumber).click()
+    ]);
+
+    expect(newTab.url()).toContain(data.url);
+
     });
   });
 });

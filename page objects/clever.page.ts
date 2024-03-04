@@ -9,6 +9,8 @@ export class CleverPage {
   readonly issueCartHeaderButton: Locator;
   readonly issueCartIntroButton: Locator;
   readonly issueCartFooterButton: Locator;
+  readonly issueCartMediumButtons: Locator;
+  readonly developerLinks: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -18,6 +20,9 @@ export class CleverPage {
     this.issueCartHeaderButton = this.page.locator(".header-button");
     this.issueCartIntroButton = this.page.locator(".intro-button");
     this.issueCartFooterButton = this.page.locator(".footer-button");
+    this.issueCartMediumButtons = this.page.locator(".utp-link-label");
+
+    this.developerLinks = this.page.locator(".footer-developers__item-link");
   }
 
   async goto() {
