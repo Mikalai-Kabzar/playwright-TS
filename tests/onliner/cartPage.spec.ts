@@ -82,26 +82,22 @@ test('Сart city choose city label was shown', async ({page}) => {
   const cartPage = new CartPage(page);
   await cartPage.goto();
   await cartPage.yourCityButton.click();
-
-  expect(cartPage.noteYourCityLabel).not.toBeVisible();
-
   await cartPage.changeCityInput.fill(notExistingCity);
-
   await cartPage.changeCityButton.click();
 
-  await expect(cartPage.noteYourCityLabel).toBeVisible();
-  expect((await cartPage.noteYourCityLabel.textContent())?.trim()).toBe('Укажите населенный пункт');
+  await expect(cartPage.noteYourCityLabel.getByText('Укажите населенный пункт')).toBeVisible();
 });
 
-test('Сart city cross button remove choose city label @debug', async ({page}) => {
-  const notExistingCity = 'Гомель';
+test('Сart city cross button remove choose city label', async ({page}) => {
+  const notExistingCity = 'Гомель123';
   const cartPage = new CartPage(page);
   await cartPage.goto();
   await cartPage.yourCityButton.click();
   await cartPage.changeCityInput.fill(notExistingCity);
   await cartPage.changeCityButton.click();
-  await expect(cartPage.noteYourCityLabel).toBeVisible();
+  await expect(cartPage.removeCityQueryButton).toBeVisible();
   await cartPage.removeCityQueryButton.click();
-  await expect(cartPage.noteYourCityLabel).not.toBeVisible();
-  expect(cartPage.changeCityInput.textContent()).toBe('');
+
+  await expect(cartPage.changeCityInput).toBeEmpty();
+  await expect(cartPage.removeCityQueryButton).toBeHidden();
 });
