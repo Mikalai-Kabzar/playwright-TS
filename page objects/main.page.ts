@@ -1,6 +1,7 @@
 import { type Locator, type Page } from '@playwright/test';
 
 export class MainPage {
+  static readonly url = 'https://www.onliner.by/';
   private static readonly sellWord = 'Продажа';
   private static readonly rentWord = 'Аренда';
   readonly page: Page;
@@ -15,7 +16,7 @@ export class MainPage {
   readonly currenciesButtons: Locator;
   readonly authBarFbButton: Locator;
   readonly weatherButton: Locator;
-  readonly cloverButton: Locator;
+  readonly cleverButton: Locator;
   readonly realtButton: Locator;
   readonly realtSellButton: Locator;
   readonly realtRentButton: Locator;
@@ -46,7 +47,7 @@ export class MainPage {
     this.authBarFbButton = this.page.locator('.auth-bar__item--fb');
     this.currenciesButtons = this.page.locator("//a[@href = 'https://kurs.onliner.by/']");
     this.weatherButton = this.page.locator("//a[@href = 'https://pogoda.onliner.by/']");
-    this.cloverButton = this.page.locator(".b-top-navigation-clover");
+    this.cleverButton = this.page.locator(".b-top-navigation-clover");
     this.realtButton = this.page.locator(".b-main-navigation__link").nth(3);
     this.realtSellButton = this.page.locator("//a[text()='Продажа']");
     this.realtRentButton = this.page.locator("//a[text()='Аренда']");
@@ -69,13 +70,10 @@ export class MainPage {
   }
 
   async goto() {
-    await this.page.goto('https://www.onliner.by/');
+    await this.page.goto(MainPage.url);
   }
 
   private buildCityLocator(operation: string, city:string){
     return this.page.locator(`//a[text()='${operation}']/../..//span[text()='${city}']`);
   }
-
-
-
 }

@@ -1,5 +1,8 @@
 import { test, expect, Locator, Page } from '@playwright/test';
 import { CartPage } from '../../page objects/cart.page';
+import { CatalogPage } from '../../page objects/catalog.page';
+import { LoginPage } from '../../page objects/login.page';
+import { MainPage } from '../../page objects/main.page';
 
 test('Cart page navigation via direct url. Existing bug with invisible promo code input that could be fixed by F5', async ({page}) => {
   const cartPage = new CartPage(page);
@@ -100,4 +103,30 @@ test('Сart city cross button remove choose city label', async ({page}) => {
 
   await expect(cartPage.changeCityInput).toBeEmpty();
   await expect(cartPage.removeCityQueryButton).toBeHidden();
+});
+
+test('Сart tab catalog navigation', async ({page}) => {
+  const cartPage = new CartPage(page);
+  await cartPage.goto();
+  await cartPage.catalogButton.click();
+
+  await expect(page).toHaveURL(CatalogPage.url);
+});
+
+test('Сart tab login navigation', async ({page}) => {
+  const cartPage = new CartPage(page);
+  let loginPage = new LoginPage(page);
+  await cartPage.goto();
+  await cartPage.enterTheSiteButton.click();
+
+  await expect(page).toHaveURL(CartPage.url);
+  await expect(loginPage.authFormTitle.getByText('Вход')).toBeVisible();
+});
+
+test('Сart tab navigation to main page', async ({page}) => {
+  const cartPage = new CartPage(page);
+  await cartPage.goto();
+  await cartPage.mainPageNavigationButton.click();
+
+  await expect(page).toHaveURL(MainPage.url);
 });

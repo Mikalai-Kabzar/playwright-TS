@@ -1,16 +1,8 @@
 import { FrameLocator, type Locator, type Page } from '@playwright/test';
 
-
-
 export class CartPage {
   readonly page: Page;
   static readonly url = 'https://cart.onliner.by/';
-  // readonly pageFrame: FrameLocator;
-  // static readonly crossButton = '.search__close';
-  // static readonly activeButtonStatusLocatorPart = "xpath = self::div[contains(@class,'item_active')]";
-  // static readonly inactiveButtonStatusLocatorPart = "xpath = self::div[not(contains(@class,'item_active'))]";
-  // readonly inCatalogueButton: Locator;
-  // readonly inTheNewsButton: Locator;
   readonly promoInput: Locator;
   readonly applyPromoButton: Locator;
   readonly errorMessageTitle: Locator;
@@ -22,14 +14,12 @@ export class CartPage {
   readonly cityNotFoundLabel: Locator;
   readonly noteYourCityLabel: Locator;
   readonly removeCityQueryButton: Locator;
-  // readonly titleCatalogLabel: Locator;
-  // readonly titleNewsLabel: Locator;
-  // readonly titleAtTheFleaMarketLabel: Locator;
-  // readonly titleForumLabel: Locator;
-
+  readonly catalogButton: Locator;
+  readonly enterTheSiteButton: Locator;
+  readonly mainPageNavigationButton: Locator;
+  
   constructor(page: Page) {
     this.page = page;
-    // this.pageFrame = this.page.frameLocator("xpath = //iframe[@class = 'modal-iframe']");
     this.promoInput = this.page.locator(".cart-form__field input");
     this.applyPromoButton = this.page.locator(".cart-form__field a");
     this.errorMessageTitle = this.page.locator(".growl-title");
@@ -41,21 +31,12 @@ export class CartPage {
     this.noteYourCityLabel = this.page.locator(".auth-form__description_error");
     this.citiesDropdownItems = this.page.locator(".auth-dropdown__item");
     this.removeCityQueryButton = this.page.locator(".auth-input__helper");
-
-    // this.inTheNewsButton = this.pageFrame.locator("xpath = //div[text()='в новостях']");
-    // this.atTheFleaMarketButton = this.pageFrame.locator("xpath = //div[text()='на барахолке']");
-    // this.onTheForumButton = this.pageFrame.locator("xpath = //div[text()='на форуме']");
-    // this.titleCatalogLabel = this.pageFrame.locator(".product__title>a");
-    // this.titleNewsLabel = this.pageFrame.locator(".news__title>a");
-    // this.titleAtTheFleaMarketLabel = this.pageFrame.locator(".baraholka__title a>strong");
-    // this.titleForumLabel = this.pageFrame.locator(".search__result a");
-
+    this.catalogButton = this.page.locator("a[href^=\"https://catalog.onliner.by\"]");
+    this.mainPageNavigationButton = this.page.locator("a[href^=\"https://www.onliner.by\"]");
+    this.enterTheSiteButton = this.page.locator(".cart-message__description a:nth-child(3)");
   }
 
   async goto() {
     await this.page.goto(CartPage.url);
   }
-
-
-
 }

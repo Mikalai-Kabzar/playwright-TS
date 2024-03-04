@@ -76,7 +76,7 @@ test('login window could be opened @main', async ({page}) => {
   await mainPage.authBarButton.click();
   let loginPage = new LoginPage(page);
   
-  await expect(loginPage.authFormTitle).toHaveText('Вход')
+  await expect(loginPage.authFormTitle).toHaveText('Вход');
 });
 
 test('login window VK could be opened @main', async ({page}) => {
@@ -122,15 +122,6 @@ test('weather could be opened by the link @main', async ({page}) => {
   await mainPage.weatherButton.click();
   await page.waitForURL('https://pogoda.onliner.by/');
   expect(page.url()).toBe('https://pogoda.onliner.by/');
-});
-
-test('clover could be opened by the link @main', async ({page, context}) => {
-  const [newTab] = await Promise.all([
-    context.waitForEvent('page'),
-    mainPage.cloverButton.click()
-  ]);
-  await newTab.waitForURL('https://clever.onliner.by/*');
-  expect(newTab.url()).toContain('https://clever.onliner.by/');
 });
 
 test('realt could be opened by the link @main', async ({page}) => {

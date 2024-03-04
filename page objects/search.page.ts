@@ -26,9 +26,5 @@ export class SearchPage {
     this.titleNewsLabel = this.pageFrame.locator(".news__title>a");
     this.titleAtTheFleaMarketLabel = this.pageFrame.locator(".baraholka__title a>strong");
     this.titleForumLabel = this.pageFrame.locator(".search__result a");
-
   }
-
-
-
 }

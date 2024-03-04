@@ -10,13 +10,9 @@ export class RealtPage {
     this.searchInput = this.page.locator('.fast-search__input');
     this.addressLabels = this.page.locator("span.classified__caption-item_adress,span.classified__caption-line>span.classified__caption-item");
 
-
   }
 
   async goto() {
     await this.page.goto('https://r.onliner.by/pk/');
   }
-
-
-
 }
