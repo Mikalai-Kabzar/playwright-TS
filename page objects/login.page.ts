@@ -6,14 +6,22 @@ export class LoginPage {
   static readonly url = 'https://profile.onliner.by/';
   readonly authInputs: Locator;
   readonly authButton: Locator;
+  readonly captchaLabel: Locator;
+  readonly captchaCheckbox: Locator;
+  readonly captchaGoogleLabel: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.authFormTitle = this.page.locator('.auth-form__title');
     this.authInputs = this.page.locator('.auth-input');
     this.authButton = this.page.locator('.auth-button_primary');
+    this.captchaLabel = this.page.locator('.auth-form__title_condensed-other');
+    const googleIframeCaptcha = this.page.frameLocator('iframe[title="reCAPTCHA"]');
+    this.captchaCheckbox = googleIframeCaptcha.locator('.recaptcha-checkbox-borderAnimation');
+    this.captchaGoogleLabel = googleIframeCaptcha.locator('.rc-anchor-checkbox-label');
 
 
+    
   }
 
   async fillLoginInputs(username: string, password: string) {
