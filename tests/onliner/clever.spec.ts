@@ -1,7 +1,7 @@
 import { test, expect, Locator, Page } from '@playwright/test';
 import { MainPage } from '../../page objects/main.page';
 import { CleverPage } from '../../page objects/clever.page';
-import { ProfilePage } from '../../page objects/profile.page';
+import { LoginPage } from '../../page objects/login.page';
 
 test('Clever page navigation via direct url', async ({page}) => {
   const cleverPage = new CleverPage(page);
@@ -43,7 +43,7 @@ test.describe('issue card link navigation tests',()=>{
     await expect(issueCardButton).toHaveText(loginButtonLabel);
     await issueCardButton.click();
 
-    expect(page.url()).toContain(ProfilePage.url);
+    expect(page.url()).toContain(LoginPage.url);
   };
 })
 
@@ -102,12 +102,12 @@ test.describe.parallel('issue card medium links navigation tests', () => {
     await cleverPage.goto();
     await new CleverPage(page).issueCartMediumButtons.nth(data.linkNumber).click();
 
-    expect(page.url()).toContain(ProfilePage.url);
+    expect(page.url()).toContain(LoginPage.url);
     });
   });
 });
 
-test.describe.parallel('Developer links navigation tests @debug', () => {
+test.describe.parallel('Developer links navigation tests', () => {
   const dataProvider = [
     { linkNumber: 0, url: 'https://69pixels.com'},//bug
     { linkNumber: 1, url: 'https://take5dev.com'},
