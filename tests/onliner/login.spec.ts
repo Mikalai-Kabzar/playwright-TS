@@ -33,7 +33,7 @@ test.describe.parallel('Login test with incorrect (username or/and password) sho
     test(`Login test with ${data.loginAddon == ''?'correct':data.loginAddon} username and ${data.passwordAddon == ''?'correct':data.passwordAddon} password causes error label`, async ({page}) => {
       const loginPage = new LoginPage(page);
       await loginPage.goto();
-      await loginPage.fillLoginInputs(process.env.onliner_username + data.loginAddon, process.env.onliner_password! + data.passwordAddon); 
+      await loginPage.fillLoginInputs(process.env.ONLINER_USERNAME + data.loginAddon, process.env.ONLINER_PASSWORD! + data.passwordAddon); 
       await loginPage.authButton.click();
     
       await expect(loginPage.captchaLabel).toBeHidden();
