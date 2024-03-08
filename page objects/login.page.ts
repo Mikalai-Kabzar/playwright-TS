@@ -9,6 +9,7 @@ export class LoginPage {
   readonly captchaLabel: Locator;
   readonly captchaCheckbox: Locator;
   readonly captchaGoogleLabel: Locator;
+  readonly captchaErrorLabel: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -19,7 +20,7 @@ export class LoginPage {
     const googleIframeCaptcha = this.page.frameLocator('iframe[title="reCAPTCHA"]');
     this.captchaCheckbox = googleIframeCaptcha.locator('.recaptcha-checkbox-borderAnimation');
     this.captchaGoogleLabel = googleIframeCaptcha.locator('.rc-anchor-checkbox-label');
-
+    this.captchaErrorLabel = this.page.locator('.auth-form__description_error');
 
     
   }
